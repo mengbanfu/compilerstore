@@ -1,0 +1,39 @@
+--- output/test_simple_assign_bisheng.s	2025-10-27 23:30:19.169498700 +0800
++++ output/test_simple_assign_our.s	2025-10-27 23:30:18.584501400 +0800
+@@ -1,24 +1,21 @@
+ 	.text
+-	.file	"test_simple_assign.c"
+-	.globl	main                            // -- Begin function main
++	.file	"input.c"
++	.globl	main
+ 	.p2align	2
+ 	.type	main,@function
+-main:                                   // @main
++main:
+ 	.cfi_startproc
+-// %bb.0:
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
+ 	sub	sp, sp, #16
+-	.cfi_def_cfa_offset 16
+-	str	wzr, [sp, #12]
+-	mov	w8, #5                          // =0x5
+-	str	w8, [sp, #8]
+-	ldr	w0, [sp, #8]
++	mov	w8, #5
++	str	w8, [sp, #4]
++	ldr	w13, [sp, #4]
++	mov	w0, w13
+ 	add	sp, sp, #16
+-	.cfi_def_cfa_offset 0
++	ldp	x29, x30, [sp], #16
+ 	ret
++	.cfi_endproc
+ .Lfunc_end0:
+ 	.size	main, .Lfunc_end0-main
+-	.cfi_endproc
+-                                        // -- End function
+-	.ident	"BiSheng Enterprise 4.2.0.2.B002 clang version 17.0.6 (2261d9fde4e0)"
+-	.section	".note.GNU-stack","",@progbits
+-	.addrsig
++

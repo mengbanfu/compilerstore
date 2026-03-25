@@ -1,0 +1,47 @@
+--- output/test_unary_bisheng.s	2025-10-27 23:30:25.445458400 +0800
++++ output/test_unary_our.s	2025-10-27 23:30:24.873154300 +0800
+@@ -1,28 +1,26 @@
+ 	.text
+-	.file	"test_unary.c"
+-	.globl	main                            // -- Begin function main
++	.file	"input.c"
++	.globl	main
+ 	.p2align	2
+ 	.type	main,@function
+-main:                                   // @main
++main:
+ 	.cfi_startproc
+-// %bb.0:
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
+ 	sub	sp, sp, #16
+-	.cfi_def_cfa_offset 16
+-	mov	w8, wzr
+-	str	wzr, [sp, #12]
+-	mov	w9, #5                          // =0x5
+-	str	w9, [sp, #8]
+-	ldr	w9, [sp, #8]
+-	subs	w8, w8, w9
++	mov	w8, #5
+ 	str	w8, [sp, #4]
+-	ldr	w0, [sp, #4]
++	ldr	w13, [sp, #4]
++	mov	w10, #0
++	mov	w11, w13
++	sub	w14, w10, w11
++	str	w14, [sp, #8]
++	ldr	w15, [sp, #8]
++	mov	w0, w15
+ 	add	sp, sp, #16
+-	.cfi_def_cfa_offset 0
++	ldp	x29, x30, [sp], #16
+ 	ret
++	.cfi_endproc
+ .Lfunc_end0:
+ 	.size	main, .Lfunc_end0-main
+-	.cfi_endproc
+-                                        // -- End function
+-	.ident	"BiSheng Enterprise 4.2.0.2.B002 clang version 17.0.6 (2261d9fde4e0)"
+-	.section	".note.GNU-stack","",@progbits
+-	.addrsig
++

@@ -1,0 +1,76 @@
+--- output/test_complex_expr_bisheng.s	2025-10-27 23:30:51.493438500 +0800
++++ output/test_complex_expr_our.s	2025-10-27 23:30:50.926213400 +0800
+@@ -1,38 +1,43 @@
+ 	.text
+-	.file	"test_complex_expr.c"
+-	.globl	main                            // -- Begin function main
++	.file	"input.c"
++	.globl	main
+ 	.p2align	2
+ 	.type	main,@function
+-main:                                   // @main
++main:
+ 	.cfi_startproc
+-// %bb.0:
+-	sub	sp, sp, #32
+-	.cfi_def_cfa_offset 32
+-	str	wzr, [sp, #28]
+-	mov	w8, #3                          // =0x3
+-	str	w8, [sp, #24]
+-	mov	w8, #4                          // =0x4
+-	str	w8, [sp, #20]
+-	mov	w8, #2                          // =0x2
+-	str	w8, [sp, #16]
+-	ldr	w8, [sp, #24]
+-	ldr	w9, [sp, #20]
+-	add	w8, w8, w9
+-	ldr	w9, [sp, #16]
+-	mul	w8, w8, w9
+-	ldr	w9, [sp, #20]
+-	ldr	w10, [sp, #16]
+-	sdiv	w9, w9, w10
+-	subs	w8, w8, w9
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
++	sub	sp, sp, #16
++	mov	w8, #3
++	str	w8, [sp, #4]
++	mov	w8, #4
++	str	w8, [sp, #8]
++	mov	w8, #2
+ 	str	w8, [sp, #12]
+-	ldr	w0, [sp, #12]
+-	add	sp, sp, #32
+-	.cfi_def_cfa_offset 0
++	ldr	w13, [sp, #4]
++	ldr	w14, [sp, #8]
++	mov	w10, w13
++	mov	w11, w14
++	add	w15, w10, w11
++	ldr	w16, [sp, #12]
++	mov	w10, w15
++	mov	w11, w16
++	mul	w17, w10, w11
++	ldr	w13, [sp, #8]
++	ldr	w14, [sp, #12]
++	mov	w10, w13
++	mov	w11, w14
++	sdiv	w15, w10, w11
++	mov	w10, w17
++	mov	w11, w15
++	sub	w16, w10, w11
++	str	w16, [sp, #16]
++	ldr	w17, [sp, #16]
++	mov	w0, w17
++	add	sp, sp, #16
++	ldp	x29, x30, [sp], #16
+ 	ret
++	.cfi_endproc
+ .Lfunc_end0:
+ 	.size	main, .Lfunc_end0-main
+-	.cfi_endproc
+-                                        // -- End function
+-	.ident	"BiSheng Enterprise 4.2.0.2.B002 clang version 17.0.6 (2261d9fde4e0)"
+-	.section	".note.GNU-stack","",@progbits
+-	.addrsig
++

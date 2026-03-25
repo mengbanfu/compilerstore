@@ -1,0 +1,71 @@
+--- output/test_function_simple_bisheng.s	2025-10-27 23:30:54.686699400 +0800
++++ output/test_function_simple_our.s	2025-10-27 23:30:54.095515200 +0800
+@@ -1,46 +1,36 @@
+ 	.text
+-	.file	"test_function_simple.c"
+-	.globl	get_five                        // -- Begin function get_five
++	.file	"input.c"
++	.globl	get_five
+ 	.p2align	2
+ 	.type	get_five,@function
+-get_five:                               // @get_five
++get_five:
+ 	.cfi_startproc
+-// %bb.0:
+-	mov	w0, #5                          // =0x5
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
++	mov	w0, #5
++	ldp	x29, x30, [sp], #16
+ 	ret
++	.cfi_endproc
+ .Lfunc_end0:
+ 	.size	get_five, .Lfunc_end0-get_five
+-	.cfi_endproc
+-                                        // -- End function
+-	.globl	main                            // -- Begin function main
++
++	.globl	main
+ 	.p2align	2
+ 	.type	main,@function
+-main:                                   // @main
++main:
+ 	.cfi_startproc
+-// %bb.0:
+-	sub	sp, sp, #32
+-	.cfi_def_cfa_offset 32
+-	stp	x29, x30, [sp, #16]             // 16-byte Folded Spill
+-	add	x29, sp, #16
+-	.cfi_def_cfa w29, 16
+-	.cfi_offset w30, -8
+-	.cfi_offset w29, -16
+-	stur	wzr, [x29, #-4]
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
++	sub	sp, sp, #16
+ 	bl	get_five
+-	str	w0, [sp, #8]
+-	ldr	w0, [sp, #8]
+-	.cfi_def_cfa wsp, 32
+-	ldp	x29, x30, [sp, #16]             // 16-byte Folded Reload
+-	add	sp, sp, #32
+-	.cfi_def_cfa_offset 0
+-	.cfi_restore w30
+-	.cfi_restore w29
++	mov	w13, w0
++	str	w13, [sp, #4]
++	ldr	w14, [sp, #4]
++	mov	w0, w14
++	add	sp, sp, #16
++	ldp	x29, x30, [sp], #16
+ 	ret
++	.cfi_endproc
+ .Lfunc_end1:
+ 	.size	main, .Lfunc_end1-main
+-	.cfi_endproc
+-                                        // -- End function
+-	.ident	"BiSheng Enterprise 4.2.0.2.B002 clang version 17.0.6 (2261d9fde4e0)"
+-	.section	".note.GNU-stack","",@progbits
+-	.addrsig
+-	.addrsig_sym get_five
++

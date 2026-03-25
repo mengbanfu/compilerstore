@@ -1,0 +1,104 @@
+--- output/test_nested_if_bisheng.s	2025-10-27 23:30:48.347635200 +0800
++++ output/test_nested_if_our.s	2025-10-27 23:30:47.757584900 +0800
+@@ -1,53 +1,58 @@
+ 	.text
+-	.file	"test_nested_if.c"
+-	.globl	main                            // -- Begin function main
++	.file	"input.c"
++	.globl	main
+ 	.p2align	2
+ 	.type	main,@function
+-main:                                   // @main
++main:
+ 	.cfi_startproc
+-// %bb.0:
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
+ 	sub	sp, sp, #16
+-	.cfi_def_cfa_offset 16
+-	str	wzr, [sp, #12]
+-	mov	w8, #10                         // =0xa
+-	str	w8, [sp, #8]
+-	mov	w8, #5                          // =0x5
++	mov	w8, #10
+ 	str	w8, [sp, #4]
+-	ldr	w8, [sp, #8]
+-	ldr	w9, [sp, #4]
+-	subs	w8, w8, w9
+-	cset	w8, le
+-	tbnz	w8, #0, .LBB0_5
+-	b	.LBB0_1
+-.LBB0_1:
+-	ldr	w8, [sp, #8]
+-	subs	w8, w8, #8
+-	cset	w8, le
+-	tbnz	w8, #0, .LBB0_3
+-	b	.LBB0_2
+-.LBB0_2:
+-	mov	w8, #1                          // =0x1
+-	str	w8, [sp]
+-	b	.LBB0_4
+-.LBB0_3:
+-	mov	w8, #2                          // =0x2
+-	str	w8, [sp]
+-	b	.LBB0_4
+-.LBB0_4:
+-	b	.LBB0_6
+-.LBB0_5:
+-	mov	w8, #3                          // =0x3
+-	str	w8, [sp]
+-	b	.LBB0_6
+-.LBB0_6:
+-	ldr	w0, [sp]
++	mov	w8, #5
++	str	w8, [sp, #8]
++	ldr	w13, [sp, #4]
++	ldr	w14, [sp, #8]
++	mov	w10, w13
++	mov	w11, w14
++	cmp	w10, w11
++	cset	w15, gt
++	mov	w10, w15
++	cmp	w10, #0
++	b.ne	.Lthen
++	b	.Lelse
++.Lthen:
++	ldr	w16, [sp, #4]
++	mov	w10, w16
++	mov	w11, #8
++	cmp	w10, w11
++	cset	w17, gt
++	mov	w10, w17
++	cmp	w10, #0
++	b.ne	.Lthen5
++	b	.Lelse6
++.Lelse:
++	mov	w8, #3
++	str	w8, [sp, #12]
++	b	.Lmerge
++.Lmerge:
++	ldr	w13, [sp, #12]
++	mov	w0, w13
+ 	add	sp, sp, #16
+-	.cfi_def_cfa_offset 0
++	ldp	x29, x30, [sp], #16
+ 	ret
++.Lthen5:
++	mov	w8, #1
++	str	w8, [sp, #12]
++	b	.Lmerge7
++.Lelse6:
++	mov	w8, #2
++	str	w8, [sp, #12]
++	b	.Lmerge7
++.Lmerge7:
++	b	.Lmerge
++	.cfi_endproc
+ .Lfunc_end0:
+ 	.size	main, .Lfunc_end0-main
+-	.cfi_endproc
+-                                        // -- End function
+-	.ident	"BiSheng Enterprise 4.2.0.2.B002 clang version 17.0.6 (2261d9fde4e0)"
+-	.section	".note.GNU-stack","",@progbits
+-	.addrsig
++

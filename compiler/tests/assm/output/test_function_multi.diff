@@ -1,0 +1,190 @@
+--- output/test_function_multi_bisheng.s	2025-10-27 23:31:01.226502500 +0800
++++ output/test_function_multi_our.s	2025-10-27 23:31:00.602745100 +0800
+@@ -1,115 +1,107 @@
+ 	.text
+-	.file	"test_function_multi.c"
+-	.globl	add                             // -- Begin function add
++	.file	"input.c"
++	.globl	add
+ 	.p2align	2
+ 	.type	add,@function
+-add:                                    // @add
++add:
+ 	.cfi_startproc
+-// %bb.0:
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
+ 	sub	sp, sp, #16
+-	.cfi_def_cfa_offset 16
+-	str	w0, [sp, #12]
++	str	w0, [sp, #4]
+ 	str	w1, [sp, #8]
+-	ldr	w8, [sp, #12]
+-	ldr	w9, [sp, #8]
+-	add	w0, w8, w9
++	ldr	w13, [sp, #4]
++	ldr	w14, [sp, #8]
++	mov	w10, w13
++	mov	w11, w14
++	add	w15, w10, w11
++	mov	w0, w15
+ 	add	sp, sp, #16
+-	.cfi_def_cfa_offset 0
++	ldp	x29, x30, [sp], #16
+ 	ret
++	.cfi_endproc
+ .Lfunc_end0:
+ 	.size	add, .Lfunc_end0-add
+-	.cfi_endproc
+-                                        // -- End function
+-	.globl	sub                             // -- Begin function sub
++
++	.globl	sub
+ 	.p2align	2
+ 	.type	sub,@function
+-sub:                                    // @sub
++sub:
+ 	.cfi_startproc
+-// %bb.0:
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
+ 	sub	sp, sp, #16
+-	.cfi_def_cfa_offset 16
+-	str	w0, [sp, #12]
++	str	w0, [sp, #4]
+ 	str	w1, [sp, #8]
+-	ldr	w8, [sp, #12]
+-	ldr	w9, [sp, #8]
+-	subs	w0, w8, w9
++	ldr	w13, [sp, #4]
++	ldr	w14, [sp, #8]
++	mov	w10, w13
++	mov	w11, w14
++	sub	w15, w10, w11
++	mov	w0, w15
+ 	add	sp, sp, #16
+-	.cfi_def_cfa_offset 0
++	ldp	x29, x30, [sp], #16
+ 	ret
++	.cfi_endproc
+ .Lfunc_end1:
+ 	.size	sub, .Lfunc_end1-sub
+-	.cfi_endproc
+-                                        // -- End function
+-	.globl	calc                            // -- Begin function calc
++
++	.globl	calc
+ 	.p2align	2
+ 	.type	calc,@function
+-calc:                                   // @calc
++calc:
+ 	.cfi_startproc
+-// %bb.0:
+-	sub	sp, sp, #32
+-	.cfi_def_cfa_offset 32
+-	stp	x29, x30, [sp, #16]             // 16-byte Folded Spill
+-	add	x29, sp, #16
+-	.cfi_def_cfa w29, 16
+-	.cfi_offset w30, -8
+-	.cfi_offset w29, -16
+-	stur	w0, [x29, #-4]
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
++	sub	sp, sp, #16
++	str	w0, [sp, #4]
+ 	str	w1, [sp, #8]
+-	ldur	w0, [x29, #-4]
+-	ldr	w1, [sp, #8]
++	ldr	w13, [sp, #4]
++	ldr	w14, [sp, #8]
++	mov	w0, w13
++	mov	w1, w14
+ 	bl	add
+-	str	w0, [sp, #4]
+-	ldur	w0, [x29, #-4]
+-	ldr	w1, [sp, #8]
++	mov	w15, w0
++	str	w15, [sp, #12]
++	ldr	w16, [sp, #4]
++	ldr	w17, [sp, #8]
++	mov	w0, w16
++	mov	w1, w17
+ 	bl	sub
+-	str	w0, [sp]
+-	ldr	w8, [sp, #4]
+-	ldr	w9, [sp]
+-	add	w0, w8, w9
+-	.cfi_def_cfa wsp, 32
+-	ldp	x29, x30, [sp, #16]             // 16-byte Folded Reload
+-	add	sp, sp, #32
+-	.cfi_def_cfa_offset 0
+-	.cfi_restore w30
+-	.cfi_restore w29
++	mov	w13, w0
++	str	w13, [sp, #16]
++	ldr	w14, [sp, #12]
++	ldr	w15, [sp, #16]
++	mov	w10, w14
++	mov	w11, w15
++	add	w16, w10, w11
++	mov	w0, w16
++	add	sp, sp, #16
++	ldp	x29, x30, [sp], #16
+ 	ret
++	.cfi_endproc
+ .Lfunc_end2:
+ 	.size	calc, .Lfunc_end2-calc
+-	.cfi_endproc
+-                                        // -- End function
+-	.globl	main                            // -- Begin function main
++
++	.globl	main
+ 	.p2align	2
+ 	.type	main,@function
+-main:                                   // @main
++main:
+ 	.cfi_startproc
+-// %bb.0:
+-	sub	sp, sp, #32
+-	.cfi_def_cfa_offset 32
+-	stp	x29, x30, [sp, #16]             // 16-byte Folded Spill
+-	add	x29, sp, #16
+-	.cfi_def_cfa w29, 16
+-	.cfi_offset w30, -8
+-	.cfi_offset w29, -16
+-	stur	wzr, [x29, #-4]
+-	mov	w0, #10                         // =0xa
+-	mov	w1, #3                          // =0x3
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
++	sub	sp, sp, #16
++	mov	w0, #10
++	mov	w1, #3
+ 	bl	calc
+-	str	w0, [sp, #8]
+-	ldr	w0, [sp, #8]
+-	.cfi_def_cfa wsp, 32
+-	ldp	x29, x30, [sp, #16]             // 16-byte Folded Reload
+-	add	sp, sp, #32
+-	.cfi_def_cfa_offset 0
+-	.cfi_restore w30
+-	.cfi_restore w29
++	mov	w13, w0
++	str	w13, [sp, #4]
++	ldr	w14, [sp, #4]
++	mov	w0, w14
++	add	sp, sp, #16
++	ldp	x29, x30, [sp], #16
+ 	ret
++	.cfi_endproc
+ .Lfunc_end3:
+ 	.size	main, .Lfunc_end3-main
+-	.cfi_endproc
+-                                        // -- End function
+-	.ident	"BiSheng Enterprise 4.2.0.2.B002 clang version 17.0.6 (2261d9fde4e0)"
+-	.section	".note.GNU-stack","",@progbits
+-	.addrsig
+-	.addrsig_sym add
+-	.addrsig_sym sub
+-	.addrsig_sym calc
++
